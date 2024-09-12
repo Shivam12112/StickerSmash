@@ -5,71 +5,99 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  SafeAreaView,
+  ScrollView,
+  GestureResponderEvent,
 } from "react-native";
 import { FontAwesome, Feather } from "@expo/vector-icons";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
+
+type RootStackParamList = {
+  BottomTabView: undefined;
+};
 
 export default function LoginScreen() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
+
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+
+  const handleLoginPress = (event: GestureResponderEvent) => {
+    navigation.replace("BottomTabView");
+  };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.headerShape} />
+    <SafeAreaView style={styles.safeArea}>
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        <View style={styles.container}>
+          <View style={styles.headerShape} />
 
-      <Text style={styles.title}>Proceed With Your</Text>
-      <Text style={styles.loginText}>Login</Text>
+          <Text style={styles.title}>Proceed With Your</Text>
+          <Text style={styles.loginText}>Login</Text>
 
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Enter Username</Text>
-        <View style={styles.inputWrapper}>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter Username"
-            value={username}
-            onChangeText={setUsername}
-            placeholderTextColor="#C4C4C4"
-          />
-          <FontAwesome name="user" size={20} color="#2F4F4F" />
-        </View>
-      </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputLabel}>Enter Username</Text>
+            <View style={styles.inputWrapper}>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter Username"
+                value={username}
+                onChangeText={setUsername}
+                placeholderTextColor="#C4C4C4"
+              />
+              <FontAwesome name="user" size={20} color="#2F4F4F" />
+            </View>
+          </View>
 
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Enter Password</Text>
-        <View style={styles.inputWrapper}>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter Password"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry={!isPasswordVisible}
-            placeholderTextColor="#C4C4C4"
-          />
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputLabel}>Enter Password</Text>
+            <View style={styles.inputWrapper}>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter Password"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry={!isPasswordVisible}
+                placeholderTextColor="#C4C4C4"
+              />
+              <TouchableOpacity
+                onPress={() => setIsPasswordVisible(!isPasswordVisible)}
+              >
+                <Feather
+                  name={isPasswordVisible ? "eye" : "eye-off"}
+                  size={20}
+                  color="#2F4F4F"
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+
           <TouchableOpacity
-            onPress={() => setIsPasswordVisible(!isPasswordVisible)}
+            style={styles.loginButton}
+            onPress={handleLoginPress}
           >
-            <Feather
-              name={isPasswordVisible ? "eye" : "eye-off"}
-              size={20}
-              color="#2F4F4F"
-            />
+            <Text style={styles.loginButtonText}>LOGIN</Text>
           </TouchableOpacity>
         </View>
-      </View>
-
-      <TouchableOpacity style={styles.loginButton}>
-        <Text style={styles.loginButtonText}>LOGIN</Text>
-      </TouchableOpacity>
-    </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
     backgroundColor: "#FFFFFF",
-    padding: 20,
+  },
+  scrollViewContent: {
+    flexGrow: 1,
     justifyContent: "center",
+  },
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    paddingHorizontal: 20,
   },
   headerShape: {
     position: "absolute",
