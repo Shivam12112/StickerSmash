@@ -16,7 +16,6 @@ import {
   View,
 } from "react-native";
 import { showMessage } from "react-native-flash-message";
-import icon from "../assets/favicon.png";
 import { storeData } from "../utils/asyncStorage";
 
 // Consolidated state into one object
@@ -46,7 +45,7 @@ const HomeScreen = () => {
   }, []);
 
   const handleShowToastMessage = useCallback(
-    (type: string) => {
+    (type: any) => {
       showMessage({
         message: "Transaction Status",
         description: state?.scanData
@@ -97,7 +96,7 @@ const HomeScreen = () => {
     <ScrollView style={styles.container}>
       <View style={styles.header}>
         <View style={styles.logoContainer}>
-          <Image source={icon} style={styles.logo} />
+          <Image source={require("../assets/icon.png")} style={styles.logo} />
           <Text style={styles.logoText}>Tranzol</Text>
         </View>
         <View style={styles.headerIcons}>
@@ -124,9 +123,9 @@ const HomeScreen = () => {
           />
         ) : (
           <View style={styles.scanBox}>
-            {state.scanData ? (
+            {state?.scanData ? (
               <View style={styles.scanDataContainer}>
-                <Text style={styles.scanDataText}>{state.scanData?.data}</Text>
+                <Text style={styles.scanDataText}>{state?.scanData?.data}</Text>
               </View>
             ) : (
               <TouchableOpacity
@@ -192,8 +191,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   logo: {
-    width: 20,
-    height: 20,
+    width: 30,
+    height: 40,
   },
   logoText: {
     fontSize: 18,
@@ -252,7 +251,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#276974",
     borderRadius: 5,
-    padding: 10,
+    paddingVertical: 15,
+    paddingHorizontal: 10,
     marginVertical: 10,
     fontSize: 16,
     color: "#4B6478",
